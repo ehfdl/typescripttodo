@@ -13,19 +13,18 @@ const useForm = (initialState: Form): any => {
     });
   };
 
-  const { isLoading: isLoadingAdd, mutate: mutateAdd } = useMutation<
-    void,
-    unknown,
-    Form,
-    unknown
-  >(["addTodo", form], (form) => addTodo(form), {
-    onSuccess: () => {
-      console.log("추가성공");
-    },
-    onError: (err) => {
-      console.log("err in add:", err);
-    },
-  });
+  const { mutate: mutateAdd } = useMutation<void, unknown, Form, unknown>(
+    ["addTodo", form],
+    (form) => addTodo(form),
+    {
+      onSuccess: () => {
+        console.log("추가성공");
+      },
+      onError: (err) => {
+        console.log("err in add:", err);
+      },
+    }
+  );
 
   const onSubmitValue = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
