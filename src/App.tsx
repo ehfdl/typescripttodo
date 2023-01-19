@@ -1,4 +1,3 @@
-import useForm from "./hooks/useForm";
 import { useEffect } from "react";
 import { query, collection, onSnapshot, where } from "firebase/firestore";
 import { dbService } from "./firebase";
@@ -8,12 +7,22 @@ import Header from "./components/Header";
 import Input from "./components/Input";
 import { Todo } from "./d";
 import styled from "styled-components";
+import Modal from "./components/Modal";
 
 function App(): JSX.Element {
   const [todos, setTodos] = useState<Todo[]>([{ id: "", title: "", text: "" }]);
   const [todosDone, setTodosDone] = useState<Todo[]>([
     { id: "", title: "", text: "" },
   ]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const onClickModal = () => {
+    if (isOpenModal) {
+      setIsOpenModal(false);
+    } else if (!isOpenModal) {
+      setIsOpenModal(true);
+    }
+  };
 
   useEffect(() => {
     const q = query(
@@ -62,6 +71,7 @@ function App(): JSX.Element {
               title={todo.title}
               text={todo.text}
               isDone={todo.isDone}
+              onClickModal={onClickModal}
             />
           );
         })}
@@ -75,10 +85,12 @@ function App(): JSX.Element {
               title={todo.title}
               text={todo.text}
               isDone={todo.isDone}
+              onClickModal={onClickModal}
             />
           );
         })}
       </TodosWrap>
+      {isOpenModal && <Modal onClickModal={onClickModal} />}
     </>
   );
 }

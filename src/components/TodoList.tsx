@@ -3,8 +3,12 @@ import styled from "styled-components";
 import { useMutation } from "react-query";
 import { deleteTodo, changeDone } from "../api";
 
-const TodoList = (props: Todo) => {
-  const { id, title, text, isDone } = props;
+interface TodoModal extends Todo {
+  onClickModal: () => void;
+}
+
+const TodoList = (props: TodoModal) => {
+  const { id, title, text, isDone, onClickModal } = props;
 
   const { mutate: delTodo } = useMutation<void, unknown, string, unknown>(
     ["deleteTodo", id],
@@ -40,6 +44,7 @@ const TodoList = (props: Todo) => {
       <TodoBtn onClick={() => changeTodo(id)}>
         {isDone === true ? "취소" : "완료"}
       </TodoBtn>
+      <TodoBtn onClick={onClickModal}>모달</TodoBtn>
     </TodoCard>
   );
 };
